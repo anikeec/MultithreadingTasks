@@ -20,15 +20,24 @@ import java.util.logging.Logger;
 public class DiggersAndWater {
     
     public static void main(String[] args) throws InterruptedException {
+        Water water = new Water();
         CupArray cupArray = new CupArray();
         for(int i=0;i<5;i++) {
             cupArray.add(new Cup(i));
         }
         CountDownLatch cdl = new CountDownLatch(25);
         for(int i=0;i<25;i++) {
-            new Thread(new Digger(i, cupArray, cdl)).start();
+            new Thread(new Digger(i, water, cupArray, cdl)).start();
         }        
     } 
+    
+}
+
+class Water {
+    
+    public synchronized void getWater(Cup cup) {
+        System.out.println("Fill cup " + cup.getId());
+    }
     
 }
 
@@ -63,8 +72,8 @@ class CupArray {
 }
 
 class Cup {
-    int id;
-    Integer threadId = null;
+    private int id;
+    private Integer threadId = null;
 
     public Cup(int id) {
         this.id = id;        
@@ -94,11 +103,13 @@ class Digger implements Runnable {
     private final CupArray cupArray;
     private int catchCounter = 0;
     private final CountDownLatch cdl;
+    private final Water water;
 
-    public Digger(int id, CupArray cupArray, CountDownLatch cdl) {
+    public Digger(int id, Water water, CupArray cupArray, CountDownLatch cdl) {
         this.id = id;
         this.cupArray = cupArray;
         this.cdl = cdl;
+        this.water = water;
     }   
 
     @Override
@@ -114,6 +125,7 @@ class Digger implements Runnable {
             try {
                 cup = cupArray.getCupFromArray(id);
                 if(cup != null) {
+                    water.getWater(cup);
                     catchCounter++;
                     System.out.println("Digger " + id + " drink from cup" + cup.getId() + ". Amount of drinks: " + catchCounter);
                 }
