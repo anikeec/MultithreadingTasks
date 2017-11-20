@@ -11,4 +11,12 @@
         <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
     <name>MultithreadingTasks</name>
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <type>jar</type>
+        </dependency>
+    </dependencies>
 </project>
