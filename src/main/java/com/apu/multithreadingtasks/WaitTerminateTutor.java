@@ -24,7 +24,7 @@ import org.junit.Test;
 public class WaitTerminateTutor {
     Thread t1, t2;
     Object monitor = new Object();
-    int runningThreadNumber = 1;
+    volatile int runningThreadNumber = 1;
 
     class TestThread implements Runnable {
             String threadName;
@@ -80,6 +80,7 @@ public class WaitTerminateTutor {
                                     e.printStackTrace();
                             }
                             testThread2.shouldTerminate=true;
+                            testThread1.shouldTerminate=true;
                     }
             });
             terminator.start();
@@ -91,6 +92,10 @@ public class WaitTerminateTutor {
             } catch (InterruptedException e) {
                     e.printStackTrace();
             }
+    }
+    
+    public static void main(String[] args) {
+        new WaitTerminateTutor().testThread();
     }
 
 }
