@@ -10,6 +10,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
+import java.util.concurrent.CopyOnWriteArrayList;
 import org.junit.Test;
 
 /**
@@ -30,7 +31,7 @@ public class SynchronizedListTutor {
         "Python", "JavaScript", "ActionScript", "Clojure", "Groovy",
         "Ruby", "C++"};
 
-    List<String> randomLangs = new Vector<String>();
+    List<String> randomLangs = new CopyOnWriteArrayList<String>();
 
     public String getRandomLangs() {
             int index = (int)(Math.random()*langs.length);
@@ -46,8 +47,9 @@ public class SynchronizedListTutor {
 
             @Override
             public void run() {
-                    for (int i=0;i<100000;i++) {
+                    for (int i=0;i<10;i++) {
                             randomLangs.add(getRandomLangs());
+                            print(randomLangs);
                     }
             }
     }
