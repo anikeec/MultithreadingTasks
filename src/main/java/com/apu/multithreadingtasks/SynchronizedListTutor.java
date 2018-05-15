@@ -46,7 +46,9 @@ public class SynchronizedListTutor {
             @Override
             public void run() {
                     for (int i=0;i<100000;i++) {
+                        synchronized(randomLangs) {
                             randomLangs.add(getRandomLangs());
+                        }
                     }
             }
     }
